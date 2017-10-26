@@ -1,0 +1,61 @@
+﻿@model Rosly.ViewModels.CourseFormViewModel
+@*@{
+    ViewBag.Title = "CourseForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+@*<h2>@Model.Course.course_name</h2>*@
+
+@using (Html.BeginForm(Model.Action, "Courses"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.HiddenFor(model => model.Id)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CourseId, "Course Name")
+        @Html.EditorFor(model => model.CourseId, new {htmlAttributes = new {@class = "form-control"}})
+        @Html.ValidationMessageFor(model => model.CourseId, "", new {@class = "text-danger hide"})
+    </div>
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Id, "Course Name")*@
+        @*<div class="col-md-10">*@
+        @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control hide" } })
+        @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger hide" })
+        @*</div>*@
+    </div>
+
+    @*<div class="form-group">
+        @Html.LabelFor(model => model.CourseId, "Course Name")
+        @Html.EditorFor(model => model.CourseId, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
+    </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, "Description")
+        @*<div class="col-md-10">*@
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+        @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>*@
+        <button type="submit" class="btn btn-primary" onclick="alerttest()">Save</button>
+        @*</div>*@
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Courses")
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

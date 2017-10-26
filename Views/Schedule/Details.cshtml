@@ -1,0 +1,89 @@
+﻿@model Rosly.ViewModels.ScheduleDetailsViewModel
+@{
+    ViewBag.Title = "title";
+}
+
+<div align="center" class="margin_bottom eventHead">
+    <h1>@Model.Name</h1>
+</div>
+
+<div class="well" align="center">
+    <p><strong>Date: </strong>@Model.StartDate</p>
+    <p><strong>Location: </strong>@Model.Area</p>
+    <p><strong>Description: </strong>@Model.Description</p>
+    @if (Model.NumOfWaitlistedStudents > 0)
+    {
+        <p><Strong>Capacity: </Strong>@Model.NumOfStudents / @Model.MaxCapacity  + (@Model.NumOfWaitlistedStudents) </p>
+    }
+    else
+    {
+        <p><Strong>Capacity: </Strong>@Model.NumOfStudents / @Model.MaxCapacity</p>
+    }
+
+    <p><strong>Enrolled Employees:</strong></p>
+    @foreach (var emp in Model.EnrolledEmployees)
+    {
+        if (Model.EnrolledEmployees == null)
+        {
+            <p>No employees are enrolled in this course.</p>
+        }
+        else
+        {
+            <p class="student">
+                @emp.fname @emp.lname
+                @*@Html.ActionLink(emp.fname + " " + emp.lname, "Details", "Employees", new { id = emp.id }, null)*@
+                <button class="btn btn-link btn-sm js-toggle-enroll" data-user-id="@emp.id" data-course-id="@Model.Id">Unenroll</button>
+            </p>
+        }
+    }
+    @Html.ActionLink("Register", "Enroll", "Employees", new { id = Model.Id }, new { @class = "btn btn-danger btn-large" })
+</div>
+<div align="center">
+    @Html.ActionLink("Back to List", "Index","Courses")
+</div>
+
+@section scripts
+{
+    <script>
+        $(document)
+        .ready(function() {
+                $(".js-toggle-enroll")
+                    .click(function(e) {
+                        var button = $(e.target);
+                        var user = $(e.currentTarget);
+                        //alert("/api/enroll/unenroll?empId=" +
+                        //    button.attr("data-user-id") +
+                        //    "&courseId=" +
+                        //    button.attr("data-course-id"));
+                        $.ajax({
+                                type: "Post",
+                                url: "/api/enrollment/unenroll?empId=" +
+                                    button.attr("data-user-id") +
+                                    "&courseId=" +
+                                    button.attr("data-course-id"),
+                                success: function () {
+                                    button.text("User has been unenrolled").removeClass("js-toggle-enroll");
+                                    alert("You have successfully unenrolled the Employee from the course");
+                                },
+                                fail: function() {
+                                    alert("Error");
+                                }
+                            }
+                        );
+                        //$.post("/api/enroll",
+                        //        {
+                        //            empId: button.attr("data-user-id"),
+                        //            courseId: button.attr("data-course-id")
+                        //        })
+                        //    .done(function() {
+                        //        button.addClass("hide");
+                        //    })
+                        //    .fail(function(result) {
+                        //        alert(result);
+                        //    });
+                    });
+            })
+    </script>
+}
+
+

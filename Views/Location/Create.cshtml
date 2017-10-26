@@ -1,0 +1,25 @@
+﻿@model Rosly.ViewModels.LocationViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Create</h2>
+@using (Html.BeginForm("Create", "Location"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Area, "Location")
+        @*<div class="col-md-10">*@
+        @Html.EditorFor(model => model.Area, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Area, "", new { @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <button type="submit" class="btn btn-primary" onclick="alerttest()">Save</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

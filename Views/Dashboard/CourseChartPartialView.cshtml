@@ -1,0 +1,104 @@
+﻿@using System.Collections
+@using Rosly.Models
+@using Rosly.ViewModels
+@model Rosly.ViewModels.CourseChartViewModel
+@{
+    var valueNumScheduled = "[";
+    var valueEnrollmentPerCourse = "[";
+    var colors = new string[5] {"#1ca8dd", "#1bc98e", "#1dc489", "#16e8dd", "#1bc98e" };
+    var random = new Random();
+    var locations = Model.Locations;
+    var schedules = new List<Schedule>();
+}
+<div class="row text-center m-t-lg">
+    
+    @{
+        var count = 0;
+        foreach (var course in Model.Courses)
+        {
+            if (count != 0)
+            {
+                valueNumScheduled += ",";
+                valueEnrollmentPerCourse += ",";
+            }
+            var color = $"#{random.Next(0x1000000):X6}";
+
+            valueNumScheduled += $"{{ value: {course.Schedules.Count}, color: \'{color}\', label: \'{course.course_name}\' }}";
+
+            var tempCount = 0;
+            foreach (var schedule in course.Schedules)
+            {
+                tempCount += schedule.Enrollments.Count;
+                schedules.Add(schedule);
+            }
+
+            valueEnrollmentPerCourse += $"{{ value: {tempCount}, color: \'{color}\', label: \'{course.course_name}\' }}";
+            count++;
+        }
+        valueNumScheduled += "]";
+        valueEnrollmentPerCourse += "]";
+    }
+    <div class="col-sm-4 m-b-md">
+        <div class="w-lg m-x-auto">
+            <canvas class="ex-graph"
+                    width="159" height="159"
+                    data-chart="doughnut"
+                    data-value="@MvcHtmlString.Create(valueNumScheduled)"
+                    data-segment-stroke-color="#fff"
+                    data-options="{ percentageInnerCutout: '20' }"></canvas>
+        </div>
+        <strong class="text-muted">Courses</strong>
+        <h3>Courses Scheduled</h3>   
+    </div>
+    <div class="col-sm-4 m-b-md">
+        <div class="w-lg m-x-auto">
+            <canvas class="ex-graph"
+                    width="159" height="159"
+                    data-chart="doughnut"
+                    data-value="@MvcHtmlString.Create(valueEnrollmentPerCourse)"
+                    data-segment-stroke-color="#fff"
+                    data-options="{ percentageInnerCutout: '20' }"></canvas>
+        </div>
+        <strong class="text-muted">Enrollments</strong>
+        <h3>Enrollments Per Course</h3>
+    </div>
+    @Html.Partial("LocationsPartialView", new LocationChartViewModel(Model.Schedules, Model.Locations))
+</div>
+
+    
+@*<div class="row text-center m-t-lg">
+    <div class="col-sm-4 m-b-md">
+        <div class="w-lg m-x-auto">
+            <canvas class="ex-graph"
+                    width="200" height="200"
+                    data-chart="doughnut"
+                    data-value="[{ value: 230, color: '#1ca8dd', label: 'Returning' }, { value: 130, color: '#1bc98e', label: 'New' }]"
+                    data-segment-stroke-color="#fff"
+                    data-options="{ percentageInnerCutout: '20' }"></canvas>
+        </div>
+        <strong class="text-muted">Traffic</strong>
+        <h3>New vs Returning</h3>
+    </div>
+    <div class="col-sm-4 m-b-md">
+        <div class="w-lg m-x-auto">
+            <canvas class="ex-graph"
+                    width="200" height="200"
+                    data-chart="doughnut"
+                    data-value="[{ value: 330, color: '#1ca8dd', label: 'Recurring' }, { value: 30, color: '#1bc98e', label: 'New' }]"
+                    data-segment-stroke-color="#fff"></canvas>
+        </div>
+        <strong class="text-muted">Revenue</strong>
+        <h3>New vs Recurring</h3>
+    </div>
+    <div class="col-sm-4 m-b-md">
+        <div class="w-lg m-x-auto">
+            <canvas class="ex-graph"
+                    width="200" height="200"
+                    data-chart="doughnut"
+                    data-value="[{ value: 100, color: '#1ca8dd', label: 'Referrals' }, { value: 260, color: '#1bc98e', label: 'Direct' }]"
+                    data-segment-stroke-color="#fff"></canvas>
+        </div>
+        <strong class="text-muted">Traffic</strong>
+        <h3>Direct vs Referrals</h3>
+    </div>
+</div>*@

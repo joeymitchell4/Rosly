@@ -1,0 +1,359 @@
+﻿@using Rosly.Dtos
+@using Rosly.ViewModels
+@model Rosly.ViewModels.DashboardViewModel
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lastYear = DateTime.Now.Year - 1;
+}
+
+@*<h2>Dashboard</h2>*@
+<div class="dashhead">
+    <div class="dashhead-titles">
+        <h6 class="dashhead-subtitle">Dashboard</h6>
+        <h2 class="dashhead-title">Reports</h2>
+    </div>
+    <div class="btn-toolbar dashhead-toolbar">
+        <div class="btn-toolbar-item">
+            <select class="form-control" id="Quarterlist">
+                <option value="0">Current Quarter</option>
+                <option value="1">Q1 @lastYear</option>
+                <option value="2">Q2 @lastYear</option>
+                <option value="3">Q3 @lastYear</option>
+                <option value="4">Q4 @lastYear</option>
+                <option value="5">Q1 @DateTime.Now.Year</option>
+                <option value="6">Q2 @DateTime.Now.Year</option>
+                <option value="7">Q3 @DateTime.Now.Year</option>
+                <option value="8">Q4 @DateTime.Now.Year</option>
+                <option value="9">All Time</option>
+            </select>
+        </div>
+    </div>
+</div>
+<hr class="m-t" />
+@Html.Partial("CourseChartPartialView", new CourseChartViewModel(Model.Courses, Model.Locations, Model.Schedules))
+<div class="hr-divider m-t m-b">
+    <h3 class="hr-divider-content hr-divider-heading">Where are students coming from?</h3>
+</div>
+<div class="row">
+    <div class="col-md-6 mb--b-md">
+        <div class="list-group">
+            <h4 class="list-group-header">Locations</h4>
+            @Html.Partial("LocationsChartPartialView", new LocationChartViewModel(Model.Schedules, Model.Locations))
+        </div>
+    </div>
+    <div class="col-md-6 mb--b-md">
+        <div class="list-group">
+            <h4 class="list-group-header">Business Units</h4>
+            @Html.Partial("BusUnitChartPartialView", new BusUnitChartViewModel(Model.Schedules, Model.BusUnits))
+        </div>
+    </div>
+</div>
+@*@Html.Partial()*@
+<div class="hr-divider m-t m-b">
+    <h3 class="hr-divider-content hr-divider-heading">Enrollments</h3>
+</div>
+@*
+    <div class="row statcards">
+        <div class="col-sm-3 m-b">
+            <div class="statcard statcard-success">
+                <div class="p-a">
+                    <span class="statcard-desc">Page views</span>
+                    <h2 class="statcard-number">
+                        12,938
+                        <small class="delta-indicator delta-positive">5%</small>
+                    </h2>
+                    <hr class="statcard-hr m-b-0">
+                </div>
+                <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[28,68,41,43,96,45,100]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+            </div>
+        </div>
+        <div class="col-sm-3 m-b">
+            <div class="statcard statcard-danger">
+                <div class="p-a">
+                    <span class="statcard-desc">Downloads</span>
+                    <h2 class="statcard-number">
+                        758
+                        <small class="delta-indicator delta-negative">1.3%</small>
+                    </h2>
+                    <hr class="statcard-hr m-b-0">
+                </div>
+                <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[4,34,64,27,96,50,80]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+            </div>
+        </div>
+        <div class="col-sm-3 m-b">
+            <div class="statcard statcard-info">
+                <div class="p-a">
+                    <span class="statcard-desc">Sign-ups</span>
+                    <h2 class="statcard-number">
+                        1,293
+                        <small class="delta-indicator delta-positive">6.75%</small>
+                    </h2>
+                    <hr class="statcard-hr m-b-0">
+                </div>
+                <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[12,38,32,94,36,54,68]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+            </div>
+        </div>
+        <div class="col-sm-3 m-b">
+            <div class="statcard statcard-warning">
+                <div class="p-a">
+                    <span class="statcard-desc">Downloads</span>
+                    <h2 class="statcard-number">
+                        758
+                        <small class="delta-indicator delta-negative">1.3%</small>
+                    </h2>
+                    <hr class="statcard-hr m-b-0">
+                </div>
+                <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[43,48,52,58,50,95,100]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+            </div>
+        </div>
+    </div>*@
+
+<div class="row">
+    <div class="col-md-9">
+
+        <form class="form-inline">
+            <div class="form-group btn-toolbar m-b-md">
+                <div class="btn-toolbar-item">
+                    @Html.DropDownListFor(m => m.Course, new SelectList(Model.Courses, "course_name", "course_name"), "Select Course", new { @class = "form-control" })
+                </div>
+                <div class="btn-toolbar-item">
+                    @Html.DropDownListFor(m => m.Location, new SelectList(Model.Locations, "area", "area"), "Employee Location", new { @class = "form-control" })
+                </div>
+                <div class="btn-toolbar-item">
+                    @Html.DropDownListFor(m => m.BusUnit, new SelectList(Model.BusUnits, "name", "name"), "Employee Bus Unit", new { @class = "form-control" })
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="m-b-md" id="enrollmentDash">
+    @*@Html.Partial("EnrollmentsPartialView", new EnrollmentDashboardViewModel())*@
+</div>
+<div class="hr-divider m-t m-b">
+    <h3 class="hr-divider-content hr-divider-heading">CSV Export</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        @using (Html.BeginForm("ExportButton", "Dashboard", FormMethod.Post))
+        {
+            <button type="submit" class="btn btn-primary">Download</button>
+        }
+    </div>
+</div>
+        @*<div class="row text-center m-t-lg">
+                <div class="col-sm-4 m-b-md">
+                    <div class="w-lg m-x-auto">
+                        <canvas class="ex-graph"
+                                width="200" height="200"
+                                data-chart="doughnut"
+                                data-value="[{ value: 230, color: '#1ca8dd', label: 'Returning' }, { value: 130, color: '#1bc98e', label: 'New' }]"
+                                data-segment-stroke-color="#252830"></canvas>
+                    </div>
+                    <strong class="text-muted">Traffic</strong>
+                    <h3>New vs Returning</h3>
+                </div>
+                <div class="col-sm-4 m-b-md">
+                    <div class="w-lg m-x-auto">
+                        <canvas class="ex-graph"
+                                width="200" height="200"
+                                data-chart="doughnut"
+                                data-value="[{ value: 330, color: '#1ca8dd', label: 'Recurring' }, { value: 30, color: '#1bc98e', label: 'New' }]"
+                                data-segment-stroke-color="#252830"></canvas>
+                    </div>
+                    <strong class="text-muted">Revenue</strong>
+                    <h3>New vs Recurring</h3>
+                </div>
+                <div class="col-sm-4 m-b-md">
+                    <div class="w-lg m-x-auto">
+                        <canvas class="ex-graph"
+                                width="200" height="200"
+                                data-chart="doughnut"
+                                data-value="[{ value: 100, color: '#1ca8dd', label: 'Referrals' }, { value: 260, color: '#1bc98e', label: 'Direct' }]"
+                                data-segment-stroke-color="#252830"></canvas>
+                    </div>
+                    <strong class="text-muted">Traffic</strong>
+                    <h3>Direct vs Referrals</h3>
+                </div>
+            </div>
+
+            <div class="hr-divider m-t-md m-b">
+                <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>
+            </div>
+
+            <div class="row statcards">
+                <div class="col-sm-6 col-lg-3 m-b">
+                    <div class="statcard statcard-success">
+                        <div class="p-a">
+                            <span class="statcard-desc">Page views</span>
+                            <h2 class="statcard-number">
+                                12,938
+                                <small class="delta-indicator delta-positive">5%</small>
+                            </h2>
+                            <hr class="statcard-hr m-b-0">
+                        </div>
+                        <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[28,68,41,43,96,45,100]}]" data-labels="['a','b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3 m-b">
+                    <div class="statcard statcard-danger">
+                        <div class="p-a">
+                            <span class="statcard-desc">Downloads</span>
+                            <h2 class="statcard-number">
+                                758
+                                <small class="delta-indicator delta-negative">1.3%</small>
+                            </h2>
+                            <hr class="statcard-hr m-b-0">
+                        </div>
+                        <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[4,34,64,27,96,50,80]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3 m-b">
+                    <div class="statcard statcard-info">
+                        <div class="p-a">
+                            <span class="statcard-desc">Sign-ups</span>
+                            <h2 class="statcard-number">
+                                1,293
+                                <small class="delta-indicator delta-positive">6.75%</small>
+                            </h2>
+                            <hr class="statcard-hr m-b-0">
+                        </div>
+                        <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[12,38,32,60,36,54,68]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3 m-b">
+                    <div class="statcard statcard-warning">
+                        <div class="p-a">
+                            <span class="statcard-desc">Downloads</span>
+                            <h2 class="statcard-number">
+                                758
+                                <small class="delta-indicator delta-negative">1.3%</small>
+                            </h2>
+                            <hr class="statcard-hr m-b-0">
+                        </div>
+                        <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[43,48,52,58,50,95,100]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+                    </div>
+                </div>
+            </div>*@
+
+        @section scripts
+{
+            @Scripts.Render("~/bundles/dashboard")
+            <script>
+                $(document).ready(function () {
+                    var course = "";
+                    var location = "";
+                    var bus = "";
+                    var quar = getParameterByName('val');
+
+                    //alert(quar);
+                    //var quarter = $("#Quarter").val().toString();
+                    console.log(@Model.Quarter);
+                    $("#enrollmentDash").load("@Url.Action("GetEnrollments","Dashboard", new EnrollmentDashboardDto(Int32.Parse(Model.Quarter)))");
+
+                    if (quar != null)
+                        $("#Quarterlist").val(quar);
+
+                    var getEnrollments = function (data) {
+                        $.ajax({
+                            url: '@Url.Content($"~/Dashboard/GetEnrollments")',
+                            type: "POST",
+                            dataType: 'html',
+                            contentType: 'application/json',
+                            data: data,
+                            success: function (result) {
+                                //alert(result);
+                                $("#enrollmentDash").html(result);
+                            },
+                            fail: function () {
+                                alert("Failed");
+                            }
+                        });
+                    };
+
+                    $("#Course").on('change',
+                        function () {
+                            //alert(this.value);
+                            course = this.value;
+
+                            $("#hiddenFields").load("@Url.Action("HiddenFields", "Dashboard")?area=" +
+                                location +
+                                "&courseName=" +
+                                this.value + "&busUnit=" + bus + "&quarter=" + quar);
+
+                            var enrollmentDashboardDto = new Object();
+                            enrollmentDashboardDto.Area = location;
+                            enrollmentDashboardDto.CourseName = course;
+                            enrollmentDashboardDto.BusUnit = bus;
+                            enrollmentDashboardDto.Quarter = @Model.Quarter;
+                            var myString = JSON.stringify(enrollmentDashboardDto);
+
+                            getEnrollments(myString);
+
+                        });
+
+                    $("#Location").on('change',
+                        function () {
+                            //alert(this.value);
+                            location = this.value;
+
+                            $("#hiddenFields").load("@Url.Action("HiddenFields", "Dashboard")?area=" +
+                                location +
+                                "&courseName=" +
+                                course + "&busUnit=" + bus + "&quarter=" + quar);
+
+                            var enrollmentDashboardDto = new Object();
+                            enrollmentDashboardDto.Area = location;
+                            enrollmentDashboardDto.CourseName = course;
+                            enrollmentDashboardDto.BusUnit = bus;
+                            enrollmentDashboardDto.Quarter = @Model.Quarter;
+                            var myString = JSON.stringify(enrollmentDashboardDto);
+
+                            getEnrollments(myString);
+                        });
+
+                    $("#BusUnit").on('change',
+                        function () {
+                            //alert(this.value);
+                            bus = this.value;
+
+                            $("#hiddenFields").load("@Url.Action("HiddenFields", "Dashboard")?area=" +
+                                location +
+                                "&courseName=" +
+                                course + "&busUnit=" + bus + "&quarter=" + quar);
+
+                            var enrollmentDashboardDto = new Object();
+                            enrollmentDashboardDto.Area = location;
+                            enrollmentDashboardDto.CourseName = course;
+                            enrollmentDashboardDto.BusUnit = bus;
+                            enrollmentDashboardDto.Quarter = @Model.Quarter;
+                            var myString = JSON.stringify(enrollmentDashboardDto);
+
+                            getEnrollments(myString);
+                        });
+
+                    $("#Quarterlist").on('change',
+                        function () {
+                            if (this.value === 0) {
+                                window.location.href = '/Dashboard/';
+                            }
+                            window.location.href = '/Dashboard/ByQuarter?val=' + this.value;
+                            //alert(this.value);
+                        }
+                    );
+
+                    function getParameterByName(name, url) {
+                        if (!url) url = window.location.href;
+                        name = name.replace(/[\[\]]/g, "\\$&");
+                        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                            results = regex.exec(url);
+                        if (!results) return null;
+                        if (!results[2]) return '';
+                        return decodeURIComponent(results[2].replace(/\+/g, " "));
+                    }
+                })
+            </script>
+        }
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")

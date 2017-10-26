@@ -1,0 +1,222 @@
+﻿@model Rosly.ViewModels.CoursesViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .btn-info,
+    .btn-info:hover,
+    .btn-info:active,
+    .btn-info:visited,
+    .btn-info:focus {
+        background-color: #808285;
+        border-color: #808285;
+    }
+
+    .btn-primary,
+    .btn-primary:hover,
+    .btn-primary:active,
+    .btn-primary:visited,
+    .btn-primary:focus {
+        background-color: #bb2322;
+        border-color: #bb2322;
+    }
+
+    body {
+        padding-top: 55px;
+    }
+
+    table {
+        text-align: left;
+    }
+
+    .th {
+        padding: 10px;
+    }
+
+    .custab {
+        border: 3px solid #808285;
+        padding: 5px;
+        margin: 5% 0;
+        box-shadow: 3px 3px 0px #bb2322;
+        transition: 0.5s;
+    }
+
+        .custab:hover {
+            box-shadow: 3px 3px 3px transparent;
+            transition: 0.5s;
+        }
+
+    .container {
+        max-width: 50000000px;
+    }
+</style>
+<div class="dashhead">
+    <div class="dashhead-titles">
+        <h6 class="dashhead-subtitle">Rosly</h6>
+        <h2 class="dashhead-title">Schedule</h2>
+    </div>
+
+    <div class="btn-toolbar dashhead-toolbar">
+        @*<div class="btn-toolbar-item input-with-icon">
+            <input type="text" value="01/01/15 - 01/08/15" class="form-control" data-provide="datepicker">
+            <span class="icon icon-calendar"></span>
+        </div>*@
+    </div>
+</div>
+<hr class="m-t">
+<form class="form-inline m-b">
+    <div class="form-group">
+        <input type="text" placeholder="Course Name" id="Course" class="form-control"/>
+        @*<input type="date" id="date" class="form-control"/>*@
+        @*<input type="text" id =""/>*@
+        @Html.DropDownListFor(m => m.Locations, new SelectList(Model.Locations, "area", "area"), "Location", new { @class = "form-control" })
+        <input type="email" id="Email" class="form-control" placeholder="Email"/>
+    </div>
+</form>
+<div class="custyle" id ="table">
+    @if (Model.ShowActions)
+    {
+        <a style="margin-bottom: 5px; margin-right: 5px;" href="@Url.Action("Create", "Schedule")" class="btn btn-primary pull-left"><b>+</b> Add course</a>
+        <a style="margin-bottom: 5px; margin-right: 5px;" href="@Url.Action("Create", "Location")" class="btn btn-info pull-left"><b>+</b> Add Location</a>
+        <a style="margin-bottom: 5px;" href="@Url.Action("Create", "BusUnit")" class="btn btn-info pull-left"><b>+</b> Add Bus Unit</a>
+    }
+    <table class="table table-striped custab">
+        <thead>
+        <tr class="tableformat">
+            <th data-field="name" data-filter-control="input" data-sortable="true">
+                Course Name
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Start Time
+            </th>
+
+            <th>
+                Capacity
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+        </thead>
+
+
+        @foreach (var course in Model.UpcomingCourses)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => course.Course.course_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => course.area)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => course.start_date)
+                </td>
+                  
+                <td>
+                    @course.Enrollments.Count / @course.max_capacity
+                </td>
+                <td style="text-align: center">
+                <a class='btn btn-primary' href="@Url.Action("Details","Schedule",new { id = course.id })">Enroll</a>
+                @if (Model.ShowActions)
+                {
+                    <a class='btn btn-info' href="@Url.Action("Edit","Schedule",new { id = course.id })">Edit</a>
+                }
+            </tr>
+        }
+
+    </table>
+</div>
+@section scripts
+{
+@Scripts.Render("~/bundles/dashboard")
+    <script>
+        $(document).ready(function () {
+            var course = "";
+            var location = "";
+            var email = "";
+
+            var getSchedule = function(data) {
+                $.ajax({
+                    url: '@Url.Content($"~/Schedule/GetSpecificCourses")',
+                    type: "POST",
+                    dataType: 'html',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function(result) {
+                        $("#table").html(result);
+                    },
+                    fail: function() {
+                        alert("Failed");
+                    }
+                });
+            }
+
+            $("#Course").on('input',
+                function () {
+                    //alert(this.value);
+                    course = this.value;
+                    if (course.length == 0) {
+                        course = null;
+                    }
+                    @*$("#hiddenFields").load("@Url.Action("HiddenFields", "Dashboard")?area=" +
+                        "" +
+                        "&courseName=" +
+                        this.value);*@
+
+                    var courseSearchDto = new Object();
+                    courseSearchDto.Area = location;
+                    courseSearchDto.CourseName = course;
+                    courseSearchDto.Email = email;
+                    var myString = JSON.stringify(courseSearchDto);
+
+                    getSchedule(myString);
+
+                });
+
+            $("#Locations").on('change',
+                function () {
+                    location = this.value;
+
+                    var courseSearchDto = new Object();
+                    courseSearchDto.Area = location;
+                    courseSearchDto.CourseName = course;
+                    courseSearchDto.Email = email;
+                    var myString = JSON.stringify(courseSearchDto);
+
+                    getSchedule(myString);
+                });
+
+            $("#Email").on('input',
+                function () {
+                    //alert(this.value);
+                    email = this.value;
+                    if (email.length == 0) {
+                        email = null;
+                    }
+                    @*$("#hiddenFields").load("@Url.Action("HiddenFields", "Dashboard")?area=" +
+                        "" +
+                        "&courseName=" +
+                        this.value);*@
+
+                    var courseSearchDto = new Object();
+                    courseSearchDto.Area = location;
+                    courseSearchDto.CourseName = course;
+                    courseSearchDto.Email = email;
+                    var myString = JSON.stringify(courseSearchDto);
+                    //alert(myString.toString());
+                    getSchedule(myString);
+
+                });
+        })
+    </script>
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+    

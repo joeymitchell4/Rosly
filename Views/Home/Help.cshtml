@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Help";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /*FAQS*/
+    .faq_question {
+        margin: 20px;
+        padding: 0px 0px 5px 0px;
+        display: inline-block;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .faq_answer_container {
+        height: 0px;
+        overflow: hidden;
+        padding: 0px;
+    }
+</style>
+
+
+<h2>FAQ For Rosly</h2>
+
+<div class="faq_container">
+    <div class="faq">
+        <div class="faq_question">How do I register for a class?</div>
+        <div class="faq_answer_container">
+           <div class="faq_answer">Click courses on the left hand side of the page and then click course list. You will be directed to a list of available courses. Click enroll and then follow the prompts on page.</div>
+        </div>
+    </div>
+</div>
+<div class="faq_container">
+    <div class="faq">
+        <div class="faq_question">How do I know if I was enrolled?</div>
+        <div class="faq_answer_container">
+            <div class="faq_answer">After enrolling you should recieve an email from the website.</div>
+        </div>
+    </div>
+</div>
+<div class="faq_container">
+    <div class="faq">
+        <div class="faq_question">How can I contact my teacher?</div>
+        <div class="faq_answer_container">
+            <div class="faq_answer">Click the instructors tab and the contact information for your instructor should be available.</div>
+        </div>
+    </div>
+</div>
+@section scripts {
+@Scripts.Render("~/bundles/dashboard")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+    <script>
+        $(document).ready(function () {
+
+            $('.faq_question').click(function () {
+
+                if ($(this).parent().is('.open')) {
+                    $(this).closest('.faq').find('.faq_answer_container').animate({ 'height': '0' }, 500);
+                    $(this).closest('.faq').removeClass('open');
+
+                } else {
+                    var newHeight = $(this).closest('.faq').find('.faq_answer').height() + 'px';
+                    $(this).closest('.faq').find('.faq_answer_container').animate({ 'height': newHeight }, 500);
+                    $(this).closest('.faq').addClass('open');
+                }
+
+            });
+
+        });
+</script>
+}

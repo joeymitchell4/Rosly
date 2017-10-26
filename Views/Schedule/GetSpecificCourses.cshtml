@@ -1,0 +1,77 @@
+﻿@model Rosly.ViewModels.CoursesViewModel
+
+<div class="custyle">
+    @if (Model.ShowActions)
+    {
+        <a style="margin-bottom: 5px;" href="@Url.Action("Create", "Schedule")" class="btn btn-primary btn pull-left"><b>+</b> Add course to schedule</a>
+    }
+    <table class="table table-striped custab">
+        <thead>
+            <tr class="tableformat">
+                <th data-field="name" data-filter-control="input" data-sortable="true">
+                    Course Name
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Start Time
+                </th>
+
+                <th>
+                    Capacity
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+
+        @if (Model.UpcomingCourses.Any())
+        {
+            foreach (var course in Model.UpcomingCourses)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => course.Course.course_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => course.area)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => course.start_date)
+                    </td>
+
+                    <td>
+                        @course.Enrollments.Count / @course.max_capacity
+                    </td>
+                    <td style="text-align: center">
+                    <a class='btn btn-primary' href="@Url.Action("Details", "Schedule", new {id = course.id})">Enroll</a>
+                    @if (Model.ShowActions)
+                    {
+                        <a class='btn btn-info' href="@Url.Action("Edit", "Schedule", new {id = course.id})">Edit</a>
+                    }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    No Matching Results
+                </td>
+
+                <td>
+                </td>
+                <td style="text-align: center"></td>
+            </tr>
+        }
+
+    </table>
+</div>

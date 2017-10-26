@@ -1,0 +1,227 @@
+﻿@model Rosly.ViewModels.ScheduleFormViewModel
+@{
+    ViewBag.Title = "ScheduleForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>@Model.Course.course_id</h2>*@
+<h2>Schedule Form</h2>
+@using (Html.BeginForm(Model.Action, "Schedule"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @*<div class="form-group">
+            @Html.HiddenFor(model => model.Course)
+            @Html.HiddenFor(model => model.Course.course_name)
+        </div>*@
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Id, "Course Name")*@
+        @*<div class="col-md-10">*@
+        @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control hide" } })
+        @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger hide" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Course)
+        <div class="form-inline">
+            @Html.DropDownListFor(m => m.Course, new SelectList(Model.Courses, "id", "course_name"), "", new { @class = "form-control courseFormDropdown" })
+            <div class="btn btn-link js-add-course" data-toggle="modal" data-target="#myModal">New</div>
+        </div>
+        @Html.ValidationMessageFor(model => model.Course, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate, "Start Date")
+        @*<div class="col-md-10">*@
+        @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", placeholder = "1 Jan 2017" })
+        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartTime, "Start Time")
+        @*<div class="col-md-10">*@
+        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Instructor)
+        <div class="form-inline">
+            @Html.DropDownListFor(m => m.Instructor, new SelectList(Model.Instructors, "email", "email"), "", new { @class = "form-control courseFormDropdown" })
+            <div class="btn btn-link js-add-instructor" data-toggle="modal" data-target="#myModal">New</div>
+        </div>
+        @Html.ValidationMessageFor(m => m.Instructor, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Area)
+        @*<div class="col-md-10">*@
+        @Html.DropDownListFor(m => m.Area, new SelectList(Model.Areas, "area", "area"), "", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Area, "", new { @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaxCapacity, "Max Capacity")
+            @*<div class="col-md-10">*@
+            @Html.EditorFor(model => model.MaxCapacity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MaxCapacity, "", new { @class = "text-danger" })
+            @*</div>*@
+        </div>
+
+        @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>*@
+        <button type="submit" class="btn btn-primary" onclick="alerttest()">Save</button>
+        @*</div>*@
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Courses")
+</div>
+
+<div id='myModal' class='modal fade'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="modalContent">
+           
+        </div>
+    </div>
+
+</div>  
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("document").ready(function () {
+            var myUrl = "";
+            var courseCreate = 0;
+            var insCreate = 0;
+
+            var loadCourseModal = function (data) {
+                courseCreate = 1;
+                insCreate = 0;
+                $.ajax({
+                    url: '@Url.Content($"~/Courses/Create")',
+                    type: "GET",
+                    dataType: 'html',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function (result) {
+                        //alert(result);
+                        $("#modalContent").html(result);
+                    },
+                    fail: function () {
+                        alert("Failed");
+                    }
+                });
+            };
+
+            var loadInstructorModal = function (data) {
+                courseCreate = 0;
+                insCreate = 1;
+                $.ajax({
+                    url: '@Url.Content($"~/Instructor/Create")',
+                    type: "GET",
+                    dataType: 'html',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function (result) {
+                        //alert(result);
+                        $("#modalContent").html(result);
+                    },
+                    fail: function () {
+                        alert("Failed");
+                    }
+                });
+            };
+
+            var ajaxCreateCourse = function (data) {
+                console.log("made it here");
+                $.ajax({
+                    url: '@Url.Content($"~/api/Course/Create")',
+                    type: "POST",
+                    dataType: 'application/json',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function (result, status) {
+                        //alert(status);
+                        console.log(status.toString());
+                        $("#myModal").removeClass("in");
+                        return result;
+                        //$("#enrollmentDash").html(result);
+                    },
+                    fail: function () {
+                        return "Failed";
+                    }
+                });
+            };
+
+            var ajaxCreateInstructor = function(data) {
+                $.ajax({
+                     url: '@Url.Content($"~/api/Instructor/Create")',
+                    type: "POST",
+                    dataType: 'application/json',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function (result, status) {
+                        alert(status);
+
+                        //console.log(status.toString());
+                        $("#myModal").removeClass("in");
+                        window.location.href = '/Schedule/Create';
+                        return result;
+                        //$("#enrollmentDash").html(result);
+                    },
+                    fail: function () {
+                        return "Failed";
+                    }
+                })
+            }
+
+            $(".js-add-course").click(function(e) {
+                loadCourseModal();
+            });
+
+            $(".js-add-instructor").click(function (e) {
+                loadInstructorModal();
+            });
+
+            $("#createButton").click(function (e) {
+                //alert("Atempt to save");
+                if (courseCreate === 1) {
+                    var courseName = $("#CourseId").val();
+                    var courseDescription = $("#Description").val();
+
+                    var courseDto = new Object();
+                    courseDto.CourseName = courseName;
+                    courseDto.Description = courseDescription;
+                    var myString = JSON.stringify(courseDto);
+
+                    myUrl = "api/Course/Create";
+
+                    var result = ajaxCreateCourse(myString);
+                } else if (insCreate === 1) {
+                    var fname = $("#Fname").val();
+                    var lname = $("#Lname").val();
+                    var email = $("#Email").val();
+
+                    var instructorDto = new Object();
+                    instructorDto.Fname = fname;
+                    instructorDto.Lname = lname;
+                    instructorDto.Email = email;
+                    var myString = JSON.stringify(instructorDto);
+
+                    var result = ajaxCreateInstructor(myString);
+                }
+
+                //console.log(result);
+            });
+        });
+    </script>
+}

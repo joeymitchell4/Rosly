@@ -1,0 +1,209 @@
+﻿@model IEnumerable<Rosly.Models.Instructor>
+@{
+    ViewBag.Title = "Instructors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Instructors</h2>
+
+<style>
+    .btn-info,
+    .btn-info:hover,
+    .btn-info:active,
+    .btn-info:visited,
+    .btn-info:focus {
+        background-color: #808285;
+        border-color: #808285;
+    }
+
+    .btn-primary,
+    .btn-primary:hover,
+    .btn-primary:active,
+    .btn-primary:visited,
+    .btn-primary:focus {
+        background-color: #bb2322;
+        border-color: #bb2322;
+    }
+
+    body {
+        padding-top: 55px;
+    }
+
+    table {
+        text-align: left;
+    }
+
+    .th {
+        padding: 10px;
+    }
+
+    .custab {
+        border: 3px solid #808285;
+        padding: 5px;
+        margin: 5% 0;
+        box-shadow: 3px 3px 0px #bb2322;
+        transition: 0.5s;
+    }
+
+        .custab:hover {
+            box-shadow: 3px 3px 3px transparent;
+            transition: 0.5s;
+        }
+
+    .container {
+        max-width: 50000000px;
+    }
+</style>
+<div class="dashhead">
+    <div class="dashhead-titles">
+        <h6 class="dashhead-subtitle"></h6>
+        <h2 class="dashhead-title"></h2>
+    </div>
+
+    <div class="btn-toolbar dashhead-toolbar">
+        @*<div class="btn-toolbar-item input-with-icon">
+                <input type="text" value="01/01/15 - 01/08/15" class="form-control" data-provide="datepicker">
+                <span class="icon icon-calendar"></span>
+            </div>*@
+    </div>
+</div>
+
+
+    <table class="table table-striped custab">
+        <thead>
+            <tr class="tableformat">
+                <th data-field="name" data-filter-control="input" data-sortable="true">
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    E-Mail
+                </th>
+            </tr>
+        </thead>
+
+
+        @foreach (var instructor in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => instructor.fname)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => instructor.lname)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => instructor.email)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/dashboard")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+        $(document).ready(function () {
+            var course = "";
+            var location = "";
+            var email = "";
+
+            var getSchedule = function(data) {
+                $.ajax({
+                    url: '@Url.Content($"~/Schedule/GetSpecificCourses")',
+                    type: "POST",
+                    dataType: 'html',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function(result) {
+                        $("#table").html(result);
+                    },
+                    fail: function() {
+                        alert("Failed");
+                    }
+                });
+            }
+            @*var getEnrollments = function (data) {
+                $.ajax({
+                    url: '@Url.Content($"~/Dashboard/GetEnrollments")',
+                    type: "POST",
+                    dataType: 'html',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function (result) {
+                        //alert(result);
+                        $("#enrollmentDash").html(result);
+                    },
+                    fail: function () {
+                        alert("Failed");
+                    }
+                });
+            };*@
+
+            $("#Course").on('input',
+                function () {
+                    //alert(this.value);
+                    course = this.value;
+                    if (course.length == 0) {
+                        course = null;
+                    }
+                    @*$("#hiddenFields").load("@Url.Action("HiddenFields", "Dashboard")?area=" +
+                        "" +
+                        "&courseName=" +
+                        this.value);*@
+
+                    var courseSearchDto = new Object();
+                    courseSearchDto.Area = location;
+                    courseSearchDto.CourseName = course;
+                    courseSearchDto.Email = email;
+                    var myString = JSON.stringify(courseSearchDto);
+
+                    getSchedule(myString);
+
+                });
+
+            $("#Locations").on('change',
+                function () {
+                    //alert(this.value);
+                    location = this.value;
+
+                    var courseSearchDto = new Object();
+                    courseSearchDto.Area = location;
+                    courseSearchDto.CourseName = course;
+                    courseSearchDto.Email = email;
+                    var myString = JSON.stringify(courseSearchDto);
+
+                    getSchedule(myString);
+                });
+
+            $("#Email").on('input',
+                function () {
+                    //alert(this.value);
+                    email = this.value;
+                    if (email.length == 0) {
+                        email = null;
+                    }
+                    @*$("#hiddenFields").load("@Url.Action("HiddenFields", "Dashboard")?area=" +
+                        "" +
+                        "&courseName=" +
+                        this.value);*@
+
+                    var courseSearchDto = new Object();
+                    courseSearchDto.Area = location;
+                    courseSearchDto.CourseName = course;
+                    courseSearchDto.Email = email;
+                    var myString = JSON.stringify(courseSearchDto);
+                    //alert(myString.toString());
+                    getSchedule(myString);
+
+                });
+        })
+    </script>
+}

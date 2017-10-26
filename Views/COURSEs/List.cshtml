@@ -1,0 +1,15 @@
+﻿@model Rosly.ViewModels.CourseListViewModel
+
+@{
+    ViewBag.Title = "Select a Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Select a Course</h2>
+
+@foreach (var course in Model.Courses)
+{
+    <ul>
+        @Html.ActionLink(@course.course_name, "Create", "Courses", new { id = course.id }, null)
+    </ul>
+}

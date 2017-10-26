@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Rosly.Models.Employee>
+
+@{
+    ViewBag.Title = "Students";
+}
+
+<h2>Students</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.lname)*@Last Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.fname)*@First Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.email)*@Email
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.bus_unit)*@Business Unit
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.cost_cent)*@Cost Center
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.cube_loc)*@Cube Location
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.employeeID)*@Employee Id
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.LOCATION.area)*@Area
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.lname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.bus_unit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cost_cent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cube_loc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.area)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id }) |
+                @Html.ActionLink("Attending", "Attending", "Courses", new { id = item.id }, null)*@
+            </td>
+        </tr>
+    }
+
+</table>

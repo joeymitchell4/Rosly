@@ -1,0 +1,59 @@
+﻿@model Rosly.ViewModels.BusUnitChartViewModel
+@{
+//var valueNumScheduled = "[";
+//var colors = new string[7] { "#1ca8dd", "#1bc98e", "#1ca8dd", "#16e8dd", "#1bc98e", "#E3720F", "#0F9CE3" };
+}
+
+@*<div class="list-group">
+    <h4 class="list-group-header">
+        Locations
+    </h4>*@
+@{
+    foreach (var location in Model.BusUnits)
+    {
+        var numOfStudents = Model.GetBusUnitEnrollments(@location.name);
+        var totalStudents = Model.TotalEnrollments;
+        var perc = Convert.ToDouble(numOfStudents / totalStudents) * 100;
+        //valueNumScheduled += $"{{ value: {numOfStudents}, color: \'{color}\', label: \'{location.area}\' }}";
+        Console.WriteLine(perc);
+        if (string.IsNullOrWhiteSpace(location.name))
+        {
+            <a class="list-group-item" href="#">
+                <span class="list-group-progress" style="width: @MvcHtmlString.Create(perc + "%")"></span>
+                <span class="pull-right text-muted">@numOfStudents</span>
+                N/A
+            </a>
+        }
+        else
+        {
+            <a class="list-group-item" href="#">
+                <span class="list-group-progress" style="width: @MvcHtmlString.Create(perc + "%")"></span>
+                <span class="pull-right text-muted">@numOfStudents</span>
+                @location.name
+            </a>
+        }
+
+        //count++;
+        //if (count == colors.Length - 1)
+        //{
+        //    count = 1;
+        //}
+    }
+}
+
+
+@*<div class="col-sm-4 m-b-md">
+        <div class="w-lg m-x-auto">
+            <canvas class="ex-graph"
+                    width="200" height="200"
+                    data-chart="doughnut"
+                    data-value="@MvcHtmlString.Create(valueNumScheduled)"
+                    data-segment-stroke-color="#fff"
+                    data-options="{ percentageInnerCutout: '20' }"></canvas>
+        </div>
+        <strong class="text-muted">Location</strong>
+        <h3>Enrollments Per Location</h3>
+    </div>*@
+@*</div>*@
+
+

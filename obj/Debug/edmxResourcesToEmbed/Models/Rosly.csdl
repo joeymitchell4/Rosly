@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RoslyDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="course_name" Type="String" MaxLength="64" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Schedules" Relationship="RoslyDbModel.FK_Schedule_courseid" FromRole="Course" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fname" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="lname" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="254" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="cost_cent" Type="Int16" Nullable="false" />
+    <Property Name="cube_loc" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="area" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="employeeId" Type="Int16" />
+    <NavigationProperty Name="Location" Relationship="Self.FK_Employee_area" FromRole="Employee" ToRole="Location" />
+    <NavigationProperty Name="Enrollments" Relationship="Self.FK_Enrollment_employee" FromRole="Employee" ToRole="Enrollment" />
+    <NavigationProperty Name="UserNotifications" Relationship="RoslyDbModel.FK_UserNotification_user" FromRole="Employee" ToRole="UserNotification" />
+    <NavigationProperty Name="BusUnit" Relationship="RoslyDbModel.EmployeeBusUnit" FromRole="Employee" ToRole="BusUnit" />
+    <Property Name="bus_unit" Type="String" Nullable="false" FixedLength="false" MaxLength="10" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Enrollment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="employee_id" Type="Int32" Nullable="false" />
+    <Property Name="schedule_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Enrollment_employee" FromRole="Enrollment" ToRole="Employee" />
+    <NavigationProperty Name="Schedule" Relationship="RoslyDbModel.FK_Enrollment_schedule1" FromRole="Enrollment" ToRole="Schedule" />
+    <Property Name="on_waitlist" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="area" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="area" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_area" FromRole="Location" ToRole="Employee" />
+    <NavigationProperty Name="Schedules" Relationship="RoslyDbModel.FK_Schedule_area" FromRole="Location" ToRole="Schedule" />
+  </EntityType>
+  <Association Name="FK_Employee_area">
+    <End Role="Location" Type="Self.Location" Multiplicity="1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="area" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="area" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Enrollment_employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Enrollment">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RoslyDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Course" EntityType="Self.Course" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" />
+    <EntitySet Name="Enrollment" EntityType="Self.Enrollment" />
+    <EntitySet Name="Location" EntityType="Self.Location" />
+    <AssociationSet Name="FK_Employee_area" Association="Self.FK_Employee_area">
+      <End Role="Location" EntitySet="Location" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Enrollment_employee" Association="Self.FK_Enrollment_employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Enrollment" EntitySet="Enrollment" />
+    </AssociationSet>
+    <EntitySet Name="Notification" EntityType="RoslyDbModel.Notification" />
+    <EntitySet Name="UserNotification" EntityType="RoslyDbModel.UserNotification" />
+    <AssociationSet Name="FK_UserNotification_user" Association="RoslyDbModel.FK_UserNotification_user">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="UserNotification" EntitySet="UserNotification" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserNotification_notification" Association="RoslyDbModel.FK_UserNotification_notification">
+      <End Role="Notification" EntitySet="Notification" />
+      <End Role="UserNotification" EntitySet="UserNotification" />
+    </AssociationSet>
+    <EntitySet Name="Instructor" EntityType="RoslyDbModel.Instructor" />
+    <EntitySet Name="Schedule" EntityType="RoslyDbModel.Schedule" />
+    <EntitySet Name="sysdiagrams" EntityType="RoslyDbModel.sysdiagram" />
+    <AssociationSet Name="FK_Schedule_courseid" Association="RoslyDbModel.FK_Schedule_courseid">
+      <End Role="Course" EntitySet="Course" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Enrollment_schedule1" Association="RoslyDbModel.FK_Enrollment_schedule1">
+      <End Role="Schedule" EntitySet="Schedule" />
+      <End Role="Enrollment" EntitySet="Enrollment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_instructorid" Association="RoslyDbModel.FK_Schedule_instructorid">
+      <End Role="Instructor" EntitySet="Instructor" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_area" Association="RoslyDbModel.FK_Schedule_area">
+      <End Role="Location" EntitySet="Location" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notification_course1" Association="RoslyDbModel.FK_Notification_course1">
+      <End Role="Schedule" EntitySet="Schedule" />
+      <End Role="Notification" EntitySet="Notification" />
+    </AssociationSet>
+    <EntitySet Name="AspNetRoles" EntityType="RoslyDbModel.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="RoslyDbModel.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="RoslyDbModel.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="RoslyDbModel.AspNetUser" />
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="RoslyDbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="RoslyDbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="RoslyDbModel.AspNetUserRoles">
+      <End Role="AspNetRole" EntitySet="AspNetRoles" />
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <EntitySet Name="BusUnit" EntityType="RoslyDbModel.BusUnit" />
+    <AssociationSet Name="EmployeeBusUnit" Association="RoslyDbModel.EmployeeBusUnit">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="BusUnit" EntitySet="BusUnit" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="date_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="notification_type" Type="RoslyDbModel.NotificationType" Nullable="false" />
+    <Property Name="original_date_time" Type="DateTime" Precision="3" />
+    <Property Name="original_location" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="course_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserNotifications" Relationship="RoslyDbModel.FK_UserNotification_notification" FromRole="Notification" ToRole="UserNotification" />
+    <NavigationProperty Name="Schedule" Relationship="RoslyDbModel.FK_Notification_course1" FromRole="Notification" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="UserNotification">
+    <Key>
+      <PropertyRef Name="user_id" />
+      <PropertyRef Name="notification_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="notification_id" Type="Int32" Nullable="false" />
+    <Property Name="is_read" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="RoslyDbModel.FK_UserNotification_user" FromRole="UserNotification" ToRole="Employee" />
+    <NavigationProperty Name="Notification" Relationship="RoslyDbModel.FK_UserNotification_notification" FromRole="UserNotification" ToRole="Notification" />
+    <Property Name="is_email_sent" Type="Boolean" />
+    <Property Name="is_email" Type="Boolean" />
+  </EntityType>
+  <Association Name="FK_UserNotification_user">
+    <End Type="RoslyDbModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="RoslyDbModel.UserNotification" Role="UserNotification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserNotification">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserNotification_notification">
+    <End Type="RoslyDbModel.Notification" Role="Notification" Multiplicity="1" />
+    <End Type="RoslyDbModel.UserNotification" Role="UserNotification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Notification">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserNotification">
+        <PropertyRef Name="notification_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EnumType Name="NotificationType" UnderlyingType="Byte" a:ExternalTypeName="Models.NotificationType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  <EntityType Name="Instructor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fname" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="lname" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" Nullable="false" MaxLength="254" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Schedules" Relationship="RoslyDbModel.FK_Schedule_instructorid" FromRole="Instructor" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="Schedule">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="start_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="area" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="max_capacity" Type="Int32" Nullable="false" />
+    <Property Name="num_of_students" Type="Int32" Nullable="false" />
+    <Property Name="is_canceled" Type="Boolean" />
+    <Property Name="course_id" Type="Int32" Nullable="false" />
+    <Property Name="instructor_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Course" Relationship="RoslyDbModel.FK_Schedule_courseid" FromRole="Schedule" ToRole="Course" />
+    <NavigationProperty Name="Enrollments" Relationship="RoslyDbModel.FK_Enrollment_schedule1" FromRole="Schedule" ToRole="Enrollment" />
+    <NavigationProperty Name="Instructor" Relationship="RoslyDbModel.FK_Schedule_instructorid" FromRole="Schedule" ToRole="Instructor" />
+    <NavigationProperty Name="Location" Relationship="RoslyDbModel.FK_Schedule_area" FromRole="Schedule" ToRole="Location" />
+    <NavigationProperty Name="Notifications" Relationship="RoslyDbModel.FK_Notification_course1" FromRole="Schedule" ToRole="Notification" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Schedule_courseid">
+    <End Type="RoslyDbModel.Course" Role="Course" Multiplicity="1" />
+    <End Type="RoslyDbModel.Schedule" Role="Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="course_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Enrollment_schedule1">
+    <End Type="RoslyDbModel.Schedule" Role="Schedule" Multiplicity="1" />
+    <End Type="RoslyDbModel.Enrollment" Role="Enrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Schedule">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Enrollment">
+        <PropertyRef Name="schedule_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_instructorid">
+    <End Type="RoslyDbModel.Instructor" Role="Instructor" Multiplicity="1" />
+    <End Type="RoslyDbModel.Schedule" Role="Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Instructor">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="instructor_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_area">
+    <End Type="RoslyDbModel.Location" Role="Location" Multiplicity="1" />
+    <End Type="RoslyDbModel.Schedule" Role="Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="area" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="area" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notification_course1">
+    <End Type="RoslyDbModel.Schedule" Role="Schedule" Multiplicity="1" />
+    <End Type="RoslyDbModel.Notification" Role="Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Schedule">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="course_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUsers" Relationship="RoslyDbModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="RoslyDbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="RoslyDbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="RoslyDbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="RoslyDbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+    <NavigationProperty Name="AspNetRoles" Relationship="RoslyDbModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Type="RoslyDbModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="RoslyDbModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaim">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Type="RoslyDbModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="RoslyDbModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Type="RoslyDbModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+    <End Type="RoslyDbModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+  </Association>
+  <EntityType Name="BusUnit">
+    <Key>
+      <PropertyRef Name="name" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" Type="String" />
+    <NavigationProperty Name="Employee" Relationship="RoslyDbModel.EmployeeBusUnit" FromRole="BusUnit" ToRole="Employee" />
+  </EntityType>
+  <Association Name="EmployeeBusUnit">
+    <End Type="RoslyDbModel.Employee" Role="Employee" Multiplicity="*" />
+    <End Type="RoslyDbModel.BusUnit" Role="BusUnit" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="BusUnit">
+        <PropertyRef Name="name" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="bus_unit" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

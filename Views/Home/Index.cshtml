@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+Layout="";
+}
+
+@*<div class="jumbotron">
+        <h1>ASP.NET</h1>
+        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+        <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    </div>*@
+
+
+
+<head>
+    <meta charset="utf-8" />
+    <title> Rosly</title>
+    <meta name="viewport" content="width=divice-width, intial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="~/Content/home-style.css">
+</head>
+<body>
+  @* @Response.AddHeader("REFRESH","10;URL=About.cshtml");*@
+    @* <a href="site.html"><DIV style="position: absolute; top:0px; left:00px; width:106px; height:86px"><img src="~/Images/logo.png" alt="logo" /></DIV></a>*@
+    @*<nav>
+            <a href="#" id="menu-icon"></a>
+            <ul>
+                <li><a href="site.html" class="current">Home</a></li>
+                <li><a href="logIn.html">Log-In / Register </a></li>
+            </ul>
+        </nav>*@
+
+    <div class="container">
+        <DIV class="logo-pic"><img src="~/Images/giphy.gif"></DIV>
+        <div class="links"><img src="~/Images/click.png"></div>
+    </div>
+</body>
+<div>
+    @*@Html.ActionLink("List of students", "Index", "Employees")<br />
+        @Html.ActionLink("List of enrollments", "Index", "Enrollments")<br />
+        @Html.ActionLink("Course List", "Index", "Courses")*@
+</div>
+
+@*<div class="row">
+        <div class="col-md-4">
+            <h2>Getting started</h2>
+            <p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Get more libraries</h2>
+            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Web Hosting</h2>
+            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        </div>
+    </div>*@
+
+
+<script>
+    window.setTimeout(function () {
+        window.location.href = '/Courses';
+    }, 2000);
+</script>

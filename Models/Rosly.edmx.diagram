@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f98f22283137498b97e5a53546152a32" Name="Diagram1" ZoomLevel="107">
+        <EntityTypeShape EntityType="RoslyDbModel.Course" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RoslyDbModel.Employee" Width="1.5" PointX="2.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RoslyDbModel.Enrollment" Width="1.5" PointX="4.875" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="RoslyDbModel.Location" Width="1.5" PointX="0.625" PointY="3.5" IsExpanded="true" />
+        <AssociationConnector Association="RoslyDbModel.FK_Employee_area" ManuallyRouted="false" />
+        <AssociationConnector Association="RoslyDbModel.FK_Enrollment_employee" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="RoslyDbModel.Notification" Width="1.5" PointX="9.25" PointY="1.5" />
+        <EntityTypeShape EntityType="RoslyDbModel.UserNotification" Width="1.5" PointX="9.75" PointY="4.625" />
+        <AssociationConnector Association="RoslyDbModel.FK_UserNotification_user" />
+        <AssociationConnector Association="RoslyDbModel.FK_UserNotification_notification" />
+        <EntityTypeShape EntityType="RoslyDbModel.Instructor" Width="1.5" PointX="7.75" PointY="7.125" />
+        <EntityTypeShape EntityType="RoslyDbModel.Schedule" Width="1.5" PointX="7" PointY="0.875" />
+        <EntityTypeShape EntityType="RoslyDbModel.sysdiagram" Width="1.5" PointX="5.375" PointY="9.25" />
+        <AssociationConnector Association="RoslyDbModel.FK_Schedule_courseid" />
+        <AssociationConnector Association="RoslyDbModel.FK_Enrollment_schedule1" />
+        <AssociationConnector Association="RoslyDbModel.FK_Schedule_instructorid" />
+        <AssociationConnector Association="RoslyDbModel.FK_Schedule_area" />
+        <AssociationConnector Association="RoslyDbModel.FK_Notification_course1" />
+        <EntityTypeShape EntityType="RoslyDbModel.AspNetRole" Width="1.5" PointX="7.375" PointY="9.5" />
+        <EntityTypeShape EntityType="RoslyDbModel.AspNetUserClaim" Width="1.5" PointX="11.875" PointY="8" />
+        <EntityTypeShape EntityType="RoslyDbModel.AspNetUserLogin" Width="1.5" PointX="11.875" PointY="10.75" />
+        <EntityTypeShape EntityType="RoslyDbModel.AspNetUser" Width="1.5" PointX="9.625" PointY="8.375" />
+        <AssociationConnector Association="RoslyDbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="RoslyDbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="RoslyDbModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="RoslyDbModel.BusUnit" Width="1.5" PointX="5" PointY="5.75" />
+        <AssociationConnector Association="RoslyDbModel.FK_EmployeeBusUnit" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

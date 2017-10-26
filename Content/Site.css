@@ -1,0 +1,354 @@
+﻿body {
+	padding-top: 50px;
+	padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 30px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+	white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+	max-width: 280px;
+}
+
+
+header {
+	/*background: #008000;*/
+	background: #bb2322;
+}
+
+a.logo {
+	background: url(.../Media/giphy.gif) no-repeat;
+}
+
+.navbar-inverse {
+	/*background: #008000;*/
+	background: #bb2322;
+	
+}
+
+
+
+.navbar-inverse .navbar-brand {
+	color: #FFFFFF;
+}
+
+
+
+
+
+
+.vr {
+	width:1px;
+	background-color:#000;
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:1260px;
+}
+	 h5 {
+			 opacity: 0.5;
+			text-align: center;
+			font-size: 120%;
+			line-height: 120%;
+			padding: 5% 0;
+		}
+	   body {
+			
+			font: 17px/20px Arial, San-Serif;
+			color: #555;
+			margin: 0;
+		}
+		
+		h1 {
+			text-align: center;
+			font-size: 180%;
+			line-height: 120%;
+			padding: 5% 0;
+		}
+		
+		/*h2 {
+			text-decoration: underline;
+			line-height: 280%;
+			padding-left: 2%;
+		}*/
+		
+		/*h3 {
+			line-height: 110%;
+			padding: 5% 0;
+		}*/
+		
+		p {
+			padding: 1%;
+		}
+		
+		img {
+			text-align: center;
+			max-width: 100%;
+			height: auto;
+			width: auto;
+		}
+		 b{
+			color: #000000;
+			text-decoration: none;
+			font-weight: bold;
+		}
+		
+		b:hover {
+			color: #000000;
+			text-decoration: underline;
+		}
+
+		.blackLink{
+			color: #000000;
+			text-decoration: none;
+			font-weight: bold;
+		}
+		
+		.blackLink:hover {
+			color: #000000;
+			text-decoration: underline;
+		}
+		a {
+			color:  #000000;
+			text-decoration: none;
+			font-weight: bold;
+		}
+		
+		a:hover {
+			color: #000000;
+			text-decoration: underline;
+		}
+		
+	   
+		
+		nav {
+			float: right;
+			padding: 35px 20px 20px 0;
+		}
+		
+		a:hover#menu-icon {
+			border-radius: 4px 4px 0 0;
+		}
+		 b:hover#menu-icon {
+			border-radius: 4px 4px 0 0;
+		}
+		
+		ul {
+			list-style: none;
+		}
+		
+		nav ul li {
+			display: inline-block;
+			/*float: left;*/
+			padding: 10px;
+		}
+		
+		.current {
+			color: #FFF;
+			text-decoration: underline;
+		}
+		.curr {
+			color: #000000;
+			text-decoration: underline;
+		}
+		
+		#doc {
+			margin: 40px 0;
+		}
+		
+		#content {
+			margin: 0 auto;
+			max-width: 1140px;
+			margin-top: 110px;
+		}
+		
+		section {
+			width: 29%;
+			float: left;
+			margin: 2% 2%;
+			text-align: center;
+		}
+		
+		.clear {
+			clear: both;
+		}
+		
+		.container {
+			margin: 0 auto;
+			/*text-align: center;*/
+		}
+		
+		.links {
+			padding: 20px;
+			font-size: 35px;
+			text-align: center;
+			color: #008000;
+			/*color: red;*/
+			text-decoration: underline;
+			display: inline;
+		}
+		
+		header {
+			border-bottom: thin solid #000000;
+			/*background: #008000;*/
+			background: #bb2322;
+			width: 100%;
+			height: 86px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 100;
+			opacity: 0.90;
+		}
+		
+	   
+		a:hover#menu-icon {
+			border-radius: 4px 4px 0 0;
+		}
+		
+		
+		.logo-pic {
+			width: 100%;
+			padding-top: 150px;
+			padding-bottom: 75px;
+		}
+.left {
+	position:absolute;
+	left:0; top:92px; bottom: 0;
+	width: 178px;
+	background: #fff3e1;
+	
+	border-right: thin solid #000000;
+	border-top: thin solid  #000000;
+
+}
+.main {
+	position: absolute;
+	left:178px; top:92px; right:0; bottom:0;
+}
+
+.navbar-brand {
+	font-size: 20px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+	color: #FFF;
+	font-size: 18px;
+}
+
+.form-control {
+	font-size: 17px;
+	padding: 0px 15px;
+	-ms-border-radius: 9px;
+	border-radius: 9px;
+}
+
+.btn {
+	-ms-border-radius: 9px;
+	border-radius: 9px;
+}
+
+.form-group {
+	left: 50%;
+}
+
+.eventHead
+{
+	padding-top: 25px;
+}
+
+.voffset { margin-top: 2px; }
+.voffset1 { margin-top: 5px; }
+.voffset2 { margin-top: 10px; }
+.voffset3 { margin-top: 20px; }
+.voffset4 { margin-top: 40px; }
+.voffset5 { margin-top: 80px; }
+
+.courses > li .date {
+	background: #bb2322;
+	color: white;
+	text-align: center;
+	width: 60px;
+	-ms-border-radius: 8px;
+	border-radius: 8px;
+}
+
+.courses > li .date .month {
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 2px 6px;
+}
+
+.courses > li .date .day {
+	background: #f7f7f7;
+	color: #333;
+	font-size: 20px;
+	padding: 6px 12px;
+}
+
+.courses {
+	list-style: none;
+}
+
+.courses > li {
+	position: relative;
+	margin-bottom: 30px;
+}
+
+.courses > li .details {
+	position: absolute;
+	top: 0;
+	left: 70px;
+}
+
+.courses > li .details .courseName {
+	font-weight: bold;
+	display: block;
+}
+
+.logo {
+	vertical-align: middle;
+}
+
+.dashAction {
+    list-style: none;
+}
+
+.dashAction > li {
+    position: relative;
+    float: none;
+}
+
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{
+    background-color:#bb2322;
+
+}
+
+.courseFormDropdown {
+    width: 100% !important;
+}
+
+#modalAlert {
+    display: none;
+}
+/*.dashhead-title {
+    text-decoration: none;
+    line-height: 0%;
+    padding-left: 0;
+}*/

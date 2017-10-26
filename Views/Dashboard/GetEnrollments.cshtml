@@ -1,0 +1,19 @@
+﻿@model Rosly.ViewModels.EnrollmentDashboardViewModel
+
+<div class="list-group">
+    <h4 class="list-group-header">
+        Enrolled Employees
+    </h4>
+    @if (Model.Enrollments != null)
+    {
+        foreach (var emp in Model.Enrollments)
+        {
+            var fullname = emp.Employee.fname + " " + emp.Employee.lname;
+            <a class="list-group-item" href="#">
+                <span class="pull-right text-muted">@emp.Schedule.Location.area</span>
+                @fullname
+            </a>
+        }
+    }
+
+</div>
